@@ -8,7 +8,7 @@
     { "id": "pipeline", "label": "Pipeline", "abbreviation": "P" },
     { "id": "bell", "label": "Alerts", "abbreviation": "A" },
     { "id": "target", "label": "Targets", "abbreviation": "T" },
-    { "id": "chat", "label": "Messages", "abbreviation": "M" },
+    { "id": "chat", "label": "AI Assistant", "abbreviation": "AI" },
     { "id": "briefcase", "label": "Deals", "abbreviation": "B" }
   ],
   "payoutSummary": {
@@ -37,6 +37,174 @@
       { "month": "Oct", "value": 8480 },
       { "month": "Nov", "value": 5400 },
       { "month": "Dec", "value": 5660 }
+    ]
+  },
+  "planBuilder": {
+    "planName": "Account Executive Plan",
+    "status": "Published",
+    "payoutFrequency": "Monthly",
+    "planDocument": "PlanDocument.pdf",
+    "tabs": ["Build", "Simulate"],
+    "activeTab": "Build",
+    "topActions": ["Configuration", "Statement columns", "Dynamic fields", "Guides"],
+    "payeesLabel": "Payees",
+    "componentsLabel": "Components",
+    "payeesAction": "Manage Payees",
+    "components": [
+      { "id": "c1", "label": "Revenue Attainment" },
+      { "id": "c2", "label": "Multi-Year", "active": true },
+      { "id": "c3", "label": "Implementation Fee" }
+    ],
+    "calculatePayout": true,
+    "rules": [
+      {
+        "id": "r1",
+        "indent": 0,
+        "type": "if",
+        "condition": { "label": "Contract Duration", "operator": "==", "value": "2 yr" },
+        "success": true
+      },
+      {
+        "id": "r2",
+        "indent": 0,
+        "type": "then",
+        "action": { "label": "Amount in USD", "operator": "*", "value": "2%" },
+        "addIf": true,
+        "success": true
+      },
+      { "id": "r3", "indent": 0, "type": "else", "addIf": true, "doNothing": true },
+      {
+        "id": "r4",
+        "indent": 1,
+        "type": "if",
+        "condition": { "label": "Contract Duration", "operator": "==", "value": "3 yr" },
+        "success": true
+      },
+      {
+        "id": "r5",
+        "indent": 1,
+        "type": "then",
+        "action": { "label": "Amount in USD", "operator": "*", "value": "3%" },
+        "addIf": true,
+        "success": true
+      },
+      { "id": "r6", "indent": 1, "type": "else", "addIf": true, "doNothing": true }
+    ]
+  },
+  "assistant": {
+    "title": "AI Assistant",
+    "subtitle": "Your copilot for account context, commission forecasting, and next-best actions.",
+    "welcomeHeading": "Ask anything about your book of business",
+    "welcomeBody": "Use prompts to simulate real workflows: summarization, risk detection, and suggestions based on emails + CRM data.",
+    "suggestedPrompts": [
+      { "id": "p1", "label": "What needs my attention today?", "responseId": "r1" },
+      { "id": "p2", "label": "Summarize key risks and opportunities this week.", "responseId": "r2" },
+      { "id": "p3", "label": "What are my top 3 next best actions?", "responseId": "r3" }
+    ],
+    "savedThreads": [
+      { "id": "t1", "title": "Monday pipeline risk review", "updatedAt": "2h ago", "responseId": "r1" },
+      { "id": "t2", "title": "Weekly email risk digest", "updatedAt": "Yesterday", "responseId": "r2" },
+      { "id": "t3", "title": "ACME expansion playbook", "updatedAt": "Mar 28", "responseId": "r3" },
+      { "id": "t4", "title": "Forecast variance deep dive", "updatedAt": "Mar 25", "responseId": "r4" }
+    ],
+    "sampleResponse": {
+      "id": "r1",
+      "query": "Which accounts need attention this week?",
+      "summary": "3 accounts need follow-up based on email sentiment shifts and stalled CRM activity.",
+      "flags": [
+        "Globex: no reply for 9 days after pricing email",
+        "Initech: close date moved twice in 2 weeks",
+        "Umbrella: renewal in 18 days with unresolved legal redlines"
+      ],
+      "suggestions": [
+        "Send a focused pricing clarification to Globex today",
+        "Schedule a manager-assisted call for Initech this week",
+        "Create a legal unblock task for Umbrella and tag owner"
+      ],
+      "sources": [
+        "Email threads: 14",
+        "CRM opportunities: 8",
+        "CRM tasks and activities: 23"
+      ]
+    },
+    "responses": [
+      {
+        "id": "r1",
+        "query": "Which accounts need attention this week?",
+        "summary": "3 accounts need follow-up based on email sentiment shifts and stalled CRM activity.",
+        "flags": [
+          "Globex: no reply for 9 days after pricing email",
+          "Initech: close date moved twice in 2 weeks",
+          "Umbrella: renewal in 18 days with unresolved legal redlines"
+        ],
+        "suggestions": [
+          "Send a focused pricing clarification to Globex today",
+          "Schedule a manager-assisted call for Initech this week",
+          "Create a legal unblock task for Umbrella and tag owner"
+        ],
+        "sources": [
+          "Email threads: 14",
+          "CRM opportunities: 8",
+          "CRM tasks and activities: 23"
+        ]
+      },
+      {
+        "id": "r2",
+        "query": "Summarize my key account emails this week",
+        "summary": "Conversation volume is up 18% week-over-week. Most threads are healthy, but two renewals show budget pressure.",
+        "flags": [
+          "Stark Industries requested discount benchmarking twice",
+          "Wonka Corp postponed procurement sign-off to next sprint"
+        ],
+        "suggestions": [
+          "Share ROI proof points with Stark before Thursday",
+          "Book a 20-minute procurement unblock call with Wonka",
+          "Log objection themes in CRM for leadership visibility"
+        ],
+        "sources": [
+          "Email threads: 26",
+          "CRM notes: 11",
+          "Renewal opportunities: 5"
+        ]
+      },
+      {
+        "id": "r3",
+        "query": "What should I do next for ACME?",
+        "summary": "ACME is expansion-positive but missing executive alignment for close confidence.",
+        "flags": [
+          "Technical champion is active, economic buyer has not joined latest thread",
+          "Implementation timeline assumptions are not yet validated"
+        ],
+        "suggestions": [
+          "Send an exec-level one-pager and request sponsor review",
+          "Schedule a 30-minute solution validation session this week",
+          "Add mutual action plan milestones in CRM by Friday"
+        ],
+        "sources": [
+          "ACME email threads: 9",
+          "Opportunity history: 1",
+          "Meeting notes: 4"
+        ]
+      },
+      {
+        "id": "r4",
+        "query": "Why did my forecast dip this month?",
+        "summary": "Forecast dipped primarily due to close-date shifts and one down-sized opportunity.",
+        "flags": [
+          "2 opportunities moved from this month to next month",
+          "1 enterprise deal reduced scope by 22%"
+        ],
+        "suggestions": [
+          "Re-validate close confidence on moved opportunities",
+          "Recover scope through phased packaging option",
+          "Prioritize mid-market fast-close deals to offset variance"
+        ],
+        "sources": [
+          "CRM opportunity changes: 17",
+          "Crystal projection snapshots: 4",
+          "Email negotiation threads: 7"
+        ]
+      }
     ]
   }
 }

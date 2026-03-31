@@ -1,12 +1,13 @@
 import { SidebarItem } from "@/types/dashboard";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import {
   PieChart01Icon,
   File02Icon,
   WorkflowSquare03Icon,
   Orbit02Icon,
   Target02Icon,
-  Message01Icon,
+  AiBrain02Icon,
   Wallet02Icon,
   InformationCircleIcon,
   UserCircleIcon,
@@ -15,18 +16,24 @@ import {
 type SidebarProps = {
   companyInitials: string;
   items: SidebarItem[];
+  activeItemId?: string;
 };
 
-export function Sidebar({ companyInitials, items }: SidebarProps) {
+export function Sidebar({ companyInitials, items, activeItemId }: SidebarProps) {
   const iconMap = {
     home: PieChart01Icon,
     docs: File02Icon,
     pipeline: WorkflowSquare03Icon,
     bell: Orbit02Icon,
     target: Target02Icon,
-    chat: Message01Icon,
+    chat: AiBrain02Icon,
     briefcase: Wallet02Icon,
   } as const;
+  const routeMap: Record<string, string> = {
+    home: "/",
+    target: "/folder",
+    chat: "/assistant",
+  };
 
   return (
     <>
@@ -36,20 +43,23 @@ export function Sidebar({ companyInitials, items }: SidebarProps) {
         </div>
 
         <nav className="flex flex-col items-center gap-3" aria-label="Primary">
-          {items.map((item, index) => (
-            <button
+          {items.map((item, index) => {
+            const isActive = activeItemId ? item.id === activeItemId : index === 0;
+            return (
+            <Link
               key={item.id}
+              href={routeMap[item.id] ?? "#"}
               className={`flex h-9 w-9 items-center justify-center rounded-lg border transition ${
-                index === 0
+                isActive
                   ? "border-blue-400 bg-white text-blue-700 shadow-sm"
                   : "border-transparent text-slate-500 hover:border-slate-300 hover:bg-white"
               }`}
               aria-label={item.label}
-              aria-current={index === 0 ? "page" : undefined}
+              aria-current={isActive ? "page" : undefined}
             >
               <HugeiconsIcon icon={iconMap[item.id as keyof typeof iconMap]} size={18} />
-            </button>
-          ))}
+            </Link>
+          )})}
         </nav>
 
         <div className="mt-auto flex flex-col items-center gap-3 pb-1">
@@ -72,18 +82,21 @@ export function Sidebar({ companyInitials, items }: SidebarProps) {
         className="fixed inset-x-0 bottom-0 z-20 flex h-16 items-center gap-1 overflow-x-auto border-t border-slate-200 bg-white/95 px-2 backdrop-blur md:hidden"
         aria-label="Primary mobile"
       >
-        {items.map((item, index) => (
-          <button
+        {items.map((item, index) => {
+          const isActive = activeItemId ? item.id === activeItemId : index === 0;
+          return (
+          <Link
             key={`mobile-${item.id}`}
+            href={routeMap[item.id] ?? "#"}
             className={`flex h-10 min-w-10 items-center justify-center rounded-xl ${
-              index === 0 ? "bg-blue-50 text-blue-600" : "text-slate-500"
+              isActive ? "bg-blue-50 text-blue-600" : "text-slate-500"
             }`}
             aria-label={item.label}
-            aria-current={index === 0 ? "page" : undefined}
+            aria-current={isActive ? "page" : undefined}
           >
             <HugeiconsIcon icon={iconMap[item.id as keyof typeof iconMap]} size={18} />
-          </button>
-        ))}
+          </Link>
+        )})}
         <button className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500" aria-label="Info">
           <HugeiconsIcon icon={InformationCircleIcon} size={18} />
         </button>

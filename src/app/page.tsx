@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f5f7fb] p-2 pb-20 sm:p-4 sm:pb-24 md:p-6 md:pb-6">
       <main className="mx-auto flex min-h-[92vh] w-full max-w-[1520px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm md:rounded-2xl">
-        <Sidebar companyInitials={data.companyInitials} items={data.sidebarItems} />
+        <Sidebar companyInitials={data.companyInitials} items={data.sidebarItems} activeItemId="home" />
 
         <section className="flex-1 p-4 sm:p-6 md:p-8">
           <Header breadcrumb={data.breadcrumb} greeting={data.greeting} />

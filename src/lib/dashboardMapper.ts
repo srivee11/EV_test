@@ -1,5 +1,5 @@
 import dashboardJson from "@/data/dashboard.json";
-import { DashboardData } from "@/types/dashboard";
+import { AssistantData, DashboardData, PlanBuilderData } from "@/types/dashboard";
 
 export function getDashboardData(): DashboardData {
   return dashboardJson as DashboardData;
@@ -21,4 +21,12 @@ export function formatCompactCurrency(value: number): string {
   }
 
   return formatCurrency(value);
+}
+
+export function getPlanBuilderData(): PlanBuilderData {
+  return (dashboardJson as DashboardData).planBuilder;
+}
+
+export function getAssistantData(): AssistantData {
+  return (dashboardJson as DashboardData).assistant;
 }
